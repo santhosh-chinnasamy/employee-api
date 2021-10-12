@@ -12,6 +12,8 @@ exports.loginEmployeeWithEmailAndPassword = async (email, password) => {
   const employee = await employeeService.getEmployeeByEmail(email);
   if (!employee || !(await employee.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+  } else if (employee.deleted) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Account Deleted, contact Admin');
   }
   return employee;
 };

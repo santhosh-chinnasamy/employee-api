@@ -5,12 +5,12 @@ const { authService, employeeService, tokenService } = require('../services');
 exports.register = catchAsync(async (req, res) => {
   const employee = await employeeService.createEmployee(req.body);
   const tokens = await tokenService.generateAuthTokens(employee);
-  res.status(httpStatus.CREATED).send({ employee, tokens });
+  res.status(httpStatus.CREATED).send({ message: 'Registration Success', employee, ...tokens });
 });
 
 exports.login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const employee = await authService.loginEmployeeWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(employee);
-  res.send({ employee, ...tokens });
+  res.send({ message: 'Login Success', employee, ...tokens });
 });

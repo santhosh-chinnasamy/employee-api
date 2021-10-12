@@ -25,6 +25,7 @@ exports.createEmployee = async (employeeBody) => {
  * @returns {Promise<QueryResult>}
  */
 exports.query = async (filter, options) => {
+  // let _filter = { ...filter, deleted: [false, true] };
   const employees = await Employee.paginate(filter, options);
   return employees;
 };
@@ -68,15 +69,18 @@ exports.updateEmployeeById = async (employeeId, updateBody) => {
 
 /**
  * Delete employee by id
+ * @param {Object} currentUser
  * @param {ObjectId} employeeId
  * @returns {Promise<Employee>}
  */
-exports.deleteEmployeeById = async (employeeId) => {
+exports.deleteEmployeeById = async (currentUser, employeeId) => {
   const employee = await this.getEmployeeById(employeeId);
+
   if (!employee) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Employee not found');
+  } else if (employee._id.equals(currentUser._id)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'You cannot delete yourself');
   }
-
   // soft delete document
   Object.assign(employee, { deleted: true, deletedAt: new Date() });
   await employee.save();

@@ -6,7 +6,7 @@ const { employeeService } = require('../services');
 
 exports.createEmployee = catchAsync(async (req, res) => {
   const employee = await employeeService.createEmployee(req.body);
-  res.status(httpStatus.CREATED).send(employee);
+  res.status(httpStatus.CREATED).json({ message: 'Saved Successfully', ...employee });
 });
 
 exports.getEmployees = catchAsync(async (req, res) => {
@@ -30,6 +30,7 @@ exports.updateEmployee = catchAsync(async (req, res) => {
 });
 
 exports.deleteEmployee = catchAsync(async (req, res) => {
-  await employeeService.deleteEmployeeById(req.params.employeeId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const { user } = req;
+  await employeeService.deleteEmployeeById(user, req.params.employeeId);
+  res.json({ message: 'Deleted Successfully' });
 });
