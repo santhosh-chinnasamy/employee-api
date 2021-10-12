@@ -10,7 +10,7 @@ exports.createEmployee = catchAsync(async (req, res) => {
 });
 
 exports.getEmployees = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'deleted']);
+  const filter = pick(req.query, ['keyword']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await employeeService.query(filter, options);
   res.send(result);
