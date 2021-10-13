@@ -11,7 +11,7 @@ exports.createEmployee = {
 
 exports.getEmployees = {
   query: Joi.object().keys({
-    keyword: Joi.string(),
+    keyword: Joi.string().allow(''),
     deleted: Joi.boolean(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
