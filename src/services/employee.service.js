@@ -24,17 +24,17 @@ exports.createEmployee = async (employeeBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-exports.query = async (filter, options) => {
-  const { keyword } = filter;
-  let _filter = {};
+exports.query = async (_filter, options) => {
+  const { keyword } = _filter;
+  const filter = {};
   if (keyword) {
-    _filter = {
-      ..._filter,
-      email: { $regex: keyword, $options: 'i' },
+    const _ = {
+      $or: [{ email: { $regex: keyword, $options: 'i' } }, { name: { $regex: keyword, $options: 'i' } }],
     };
+    Object.assign(filter, _);
   }
 
-  const employees = await Employee.paginate(_filter, options);
+  const employees = await Employee.paginate(filter, options);
   return employees;
 };
 
