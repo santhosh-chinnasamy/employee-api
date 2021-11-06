@@ -39,7 +39,7 @@
     "eslint-plugin-security": "^1.4.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.7",
-    "nodemon": "^2.0.0",
+    "nodemon": "^2.0.13",
     "prettier": "^2.0.5"
   }
 }
